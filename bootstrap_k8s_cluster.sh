@@ -13,7 +13,7 @@ k8s_version=v0.9.2
 # GC settings
 
 # SET YOUR PROJECT AND ZONE !!!
-project=web-hosting-555
+project=my-cloud-project
 zone=europe-west1-c
 
 # CoreOS RELEASE CHANNEL
