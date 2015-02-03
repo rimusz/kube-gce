@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # SET ETCD VERSION TO BE USED !!!
 ETCD_RELEASE=v0.4.6
