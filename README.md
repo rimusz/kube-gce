@@ -9,7 +9,6 @@ By default it is set to master + two nodes.
 
 * You need Google Cloud account and GC SDK installed
 * git
-* OS X comes with wget without HTTPS support (needed to download Kubernetes from Google), so install it via `brew` or [Rudix wget package](http://rudix.org/packages/wget.html)
 * The rest like `etcdctl, fleetctl and kubectl` will be installed by `bootstrap_k8s_cluster.sh` script
 
 
