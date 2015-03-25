@@ -1,4 +1,5 @@
 #!/bin/bash
+ssh-add ~/.ssh/google_compute_engine &>/dev/null
 
 # SET ETCD VERSION TO BE USED !!!
 ETCD_RELEASE=v0.4.6
