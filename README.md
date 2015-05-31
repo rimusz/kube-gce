@@ -1,11 +1,11 @@
 # Easy Deploying CoreOS with Kubernetes to GCE
 
-With one simple script on your Mac OS X you can deploy an elastic Kubernetes cluster on top of CoreOS using [Fleet](https://github.com/coreos/fleet) and [flannel](https://github.com/coreos/flannel) to GCE.
+With one simple script on your Mac OS X or Linux computer, you can deploy an elastic Kubernetes cluster on top of CoreOS using [Fleet](https://github.com/coreos/fleet) and [flannel](https://github.com/coreos/flannel) to GCE.
 By default it is set to a master + two nodes.
 
 
 
-### Install dependencies if you do not have them on your Mac OS:
+### Install dependencies if you do not have them on your Mac OS/Linux:
 
 * You need Google Cloud account and GC SDK installed
 * git
@@ -21,7 +21,7 @@ By default it is set to a master + two nodes.
 ETCD_RELEASE, FLEET_RELEASE, k8s_version, project and zone
 ````
 * then run bootstrap_k8s_cluster.sh 
-* And that's it, in a few minutes you will have Kubernetes cluster with master + 2 nodes on GCE running and required OS X clients `etcdctl, fleetctl and kubectl` installed
+* And that's it, in a few minutes you will have Kubernetes cluster with master + 2 nodes on GCE running and required OS X/Linux clients `etcdctl, fleetctl and kubectl` installed
 
 
 ## What exactly `bootstrap_k8s_cluster.sh` does
@@ -42,7 +42,7 @@ kube-kubelet.service
 
 ## Usage
 
-When you are done the bootstraping Kuberntes cluster, from the same folder run `set_k8s_access.sh` to get shell preset to work with etcd, fleet and Kubernetes master.
+When you are done the bootstraping Kubernetes cluster, from the same folder run `set_k8s_access.sh` to get shell preset to work with etcd, fleet and Kubernetes master.
 
 Script will do the following:
 ````
@@ -96,6 +96,6 @@ At this point you are ready to launch pods using the kubecfg command tool, or th
 
 Adding more node machines is as easy as starting up more nodes using the `node.yml` cloud-config file. The same is true for removing machines, simply destroy them and Fleet will reschedule the units.
 
-## CoreOS Vagrant Kubernetes cluster GUI App for Mac OS X
+## If you are a Mac user, you can try my `CoreOS Vagrant Kubernetes cluster GUI App for Mac OS X`
 [It will allow you very easily to provison Kubenetes Cluster on your Mac](https://github.com/rimusz/coreos-osx-gui-kubernetes-cluster)
 
