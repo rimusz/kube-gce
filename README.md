@@ -24,7 +24,7 @@ ETCD_RELEASE, FLEET_RELEASE, k8s_version, project and zone
 * And that's it, in a few minutes you will have Kubernetes cluster with master + 2 nodes on GCE running and required OS X/Linux clients `etcdctl, fleetctl and kubectl` installed
 
 
-## What exactly `bootstrap_k8s_cluster.sh` does
+### What exactly `bootstrap_k8s_cluster.sh` does
 
 * Bootstraps Kubernetes cluster with `gcloud` utility to GCE
 
