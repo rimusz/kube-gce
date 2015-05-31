@@ -96,6 +96,6 @@ At this point you are ready to launch pods using the kubecfg command tool, or th
 
 Adding more node machines is as easy as starting up more nodes using the `node.yml` cloud-config file. The same is true for removing machines, simply destroy them and Fleet will reschedule the units.
 
-#### If you are a Mac user, you can try my `CoreOS Vagrant Kubernetes cluster GUI App for Mac OS X`
+If you are a Mac user, you can try my `CoreOS Vagrant Kubernetes cluster GUI App for Mac OS X`
 [It will allow you very easily to provison Kubenetes Cluster on your Mac](https://github.com/rimusz/coreos-osx-gui-kubernetes-cluster)
 
