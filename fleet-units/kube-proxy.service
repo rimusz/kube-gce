@@ -1,13 +1,16 @@
 [Unit]
 Description=Kubernetes Proxy
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Requires=setup-network-environment.service
+After=setup-network-environment.service
 
 [Service]
-ExecStartPre=/bin/bash -c '/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/k8s_version/bin/linux/amd64/kube-proxy'
+ExecStartPre=/bin/bash -c '/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/_K8S_VERSION_/bin/linux/amd64/kube-proxy'
 ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-proxy
+ExecStartPre=/opt/bin/wupiao _MASTER-INTERNAL-IP_:8080
 ExecStart=/opt/bin/kube-proxy \
---etcd_servers=http://CONTROL-NODE-INTERNAL-IP:4001 \
---logtostderr=true
+ --master=http://_MASTER-INTERNAL-IP_:4001 \
+ --logtostderr=true
 
 [X-Fleet]
 Global=true
