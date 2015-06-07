@@ -1,101 +1,87 @@
 # Easy Deploying CoreOS with Kubernetes to GCE
 
-With one simple script on your Mac OS X or Linux computer, you can deploy an elastic Kubernetes cluster on top of CoreOS using [Fleet](https://github.com/coreos/fleet) and [flannel](https://github.com/coreos/flannel) to GCE.
-By default it is set to a master + two nodes.
+With a few simple scripts on your Mac OS X or Linux computer, you can deploy an elastic Kubernetes cluster on top of CoreOS using [fleet](https://github.com/coreos/fleet) to GCE.
+By default it is set to one master + three nodes.
 
 
 
-### Install dependencies if you do not have them on your Mac OS/Linux:
+### Install dependencies if you do not have them on your OS X/Linux:
 
-* You need Google Cloud account and GC SDK installed
+* You need Google Cloud account and [GC SDK](https://cloud.google.com/sdk/) installed
 * git
-* The rest like `etcdctl, fleetctl and kubectl` will be installed by `bootstrap_k8s_cluster.sh` script
 
 
-### Clone this project and get it running!
-
-* git clone https://github.com/rimusz/coreos-multi-node-k8s-gce
-* cd coreos-multi-node-k8s-gce
-* edit `bootstrap_k8s_cluster.sh` and set
+### Clone this project and set settings:
 ````
-ETCD_RELEASE, FLEET_RELEASE, k8s_version, project and zone
+git clone https://github.com/rimusz/coreos-multi-node-k8s-gce
+cd coreos-multi-node-k8s-gce
 ````
-* then run bootstrap_k8s_cluster.sh 
-* And that's it, in a few minutes you will have Kubernetes cluster with master + 2 nodes on GCE running and required OS X/Linux clients `etcdctl, fleetctl and kubectl` installed
+* edit `settings` and set `project and zone`, the rest of settings you can adjust by your requirements if you need to.
 
+### Bootstrap Kubernetes Cluster and install local clients
 
-### What exactly `bootstrap_k8s_cluster.sh` does
+* To bootstrap CoreOS cluster in GCE run:
 
-* Bootstraps Kubernetes cluster with `gcloud` utility to GCE
-
-* Downloads `etcdctl, fleetctl and kubectl` and puts them to `~/k8s-bin` folder
-
-* Deploys Kubernetes fleet units to Kubernetes cluster on GCE:
 ````
-kube-apiserver.service          
-kube-scheduler.service            
-kube-register.service
-kube-controller-manager.service 
-kube-proxy.service 
-kube-kubelet.service             
+1-bootstrap_cluster.sh
 ````
+
+* To install local etcdctl, fleetctl and kubectl clients run:
+
+````
+2-get_k8s_fleet_etcd.sh
+````
+
+* Setup Kubernetes on CoreOS cluster run:
+
+````
+3-install_k8s_fleet_units.sh
+````
+##### And that's it, you now have Kubernetes cluster with one master + 3 nodes running in GCE and required OS X/Linux clients `etcdctl, fleetctl and kubectl` installed on your computer.
+
 
 ## Usage
 
 When you are done the bootstraping Kubernetes cluster, from the same folder run `set_k8s_access.sh` to get shell preset to work with etcd, fleet and Kubernetes master.
 
-Script will do the following:
-````
-# fleet
-export FLEETCTL_TUNNEL="master_external_ip"
-# etcd
-ssh -f -nNT -L 4001:127.0.0.1:4001 core@master_external_ip
-# kubernetes master
-ssh -f -nNT -L 8080:127.0.0.1:8080 core@master_external_ip
+Script output will show the following:
 
 ````
+/registry
+/coreos.com
 
-List the running machines:
-````
-$ fleetctl list-machines
-MACHINE     IP              METADATA
-9c1aa398... 10.240.82.10    role=control
-a6681f2c... 10.240.168.12   role=node
-fe36d443... 10.240.120.228  role=node
-````
-List the running units:
-````
-$ fleetctl list-units
-UNIT                            MACHINE                     ACTIVE  SUB
+UNIT								MACHINE					ACTIVE		SUB
+kube-apiserver.service			cc124065.../10.240.64.180	active	running
+kube-controller-manager.service	cc124065.../10.240.64.180	active	running
+kube-kubelet.service			21ed373b.../10.240.189.83	active	running
+kube-kubelet.service			770ff9fd.../10.240.8.219	active	running
+kube-kubelet.service			a9b4be28.../10.240.252.226	active	running
+kube-proxy.service				21ed373b.../10.240.189.83	active	running
+kube-proxy.service				770ff9fd.../10.240.8.219	active	running
+kube-proxy.service				a9b4be28.../10.240.252.226	active	running
+kube-register.service			cc124065.../10.240.64.180	active	running
+kube-scheduler.service			cc124065.../10.240.64.180	active	running
 
-kube-register.service           a6681f2c.../10.240.82.10    active  running
-kube-controller-manager.service a6681f2c.../10.240.82.10    active  running
-kube-kubelet.service            a6681f2c.../10.240.168.12   active  running
-kube-kubelet.service            fe36d443.../10.240.120.228  active  running
-kube-proxy.service              a6681f2c.../10.240.168.12   active  running
-kube-proxy.service              fe36d443.../10.240.120.228  active  running
-kube-scheduler.service          a6681f2c.../10.240.81.10    active  running
-kube-apiserver.service          a6681f2c.../10.240.82.10    active  running
+NAME             LABELS                                  STATUS
+10.240.189.83    kubernetes.io/hostname=10.240.189.83    Ready
+10.240.252.226   kubernetes.io/hostname=10.240.252.226   Ready
+10.240.8.219     kubernetes.io/hostname=10.240.8.219     Ready
+
+Type exit when you are finished ...
 ````
 
-List the registered Kubernetes Kubelets:
-````
-$ kubecfg list /minions
-Minion identifier
-----------
-10.240.168.12
-10.240.120.228
-````
-At this point you are ready to launch pods using the kubecfg command tool, or the Kubernetes API.
+At this point you are ready to start playing with Kubernetes using the `kubectl` command tool.
 
-* When you are done with `set_k8s_access.sh` just type exit or ctrl+d and on exit script will close all ssh connections to Kubernetes master.
+* When you are done with `set_k8s_access.sh` just type exit or ctrl+d and on exit script will close all ssh connections to remote `etcd control` and `Kubernetes master`.
  
-##### You can manually run `get_k8s_fleet_etcd_osx.sh` script to update OS X `etcdctl, fleetctl and kubectl` clients.
+##### You can manually run `2-get_k8s_fleet_etcd.sh` script to update OS X/Linux `etcdctl, fleetctl and kubectl` clients.
 
 ### Adding and removing machines
 
-Adding more node machines is as easy as starting up more nodes using the `node.yml` cloud-config file. The same is true for removing machines, simply destroy them and Fleet will reschedule the units.
+To add more nodes, just update `settings` `node_count` and run `1-bootstrap_k8s_cluster.sh` again. For removing nodes, simply destroy them via `GCE developer console` and `fleet` will reschedule the `kube-kubelet` and `kube-proxy` units.
 
-### If you are a Mac user:
-You can try my [CoreOS Vagrant Kubernetes cluster GUI App for Mac OS X](https://github.com/rimusz/coreos-osx-gui-kubernetes-cluster), it will allow you very easily to provison a small Kubenetes Cluster on your Mac
+### If you are OS X user:
+* A standalone Kubernetes CoreOS VM App can be found here [CoreOS-Vagrant Kubernetes Solo GUI](https://github.com/rimusz/coreos-osx-gui-kubernetes-solo).
+* Cluster one with Kubernetes CoreOS VM App can be found here [CoreOS-Vagrant Kubernetes Cluster GUI for OS X](https://github.com/rimusz/coreos-osx-gui-kubernetes-cluster).
+
 

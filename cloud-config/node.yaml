@@ -1,13 +1,10 @@
 #cloud-config
 
 coreos:
-  update:
-    group: _GROUP_
-    reboot-strategy: off
   etcd2:
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
     advertise-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
-    initial-cluster: master=http://_MASTER-INTERNAL-IP_:2380
+    initial-cluster: master=http://10.222.1.1:2380
     proxy: on
   fleet:
     metadata: role=node

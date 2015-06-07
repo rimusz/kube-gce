@@ -3,8 +3,6 @@ Description=Kubernetes Registration Service
 Documentation=https://github.com/kelseyhightower/kube-register
 Requires=kube-apiserver.service
 After=kube-apiserver.service
-Requires=fleet.service
-After=fleet.service
 
 [Service]
 ExecStartPre=/bin/bash -c '/usr/bin/wget -N -O /opt/bin/kube-register https://github.com/kelseyhightower/kube-register/releases/download/v0.0.4/kube-register-0.0.4-linux-amd64'

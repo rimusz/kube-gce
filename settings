@@ -8,14 +8,16 @@ zone=europe-west1-c
 # CoreOS RELEASE CHANNEL
 channel=alpha
 
-# MASTER AND NODES MACHINE TYPES
+# MASTER AND NODE MACHINE TYPES
 master_machine_type=g1-small
 node_machine_type=n1-standard-1
 ##
 
 ###
-# master  name
+# master name
 master_name=k8s-master
-# node name
+
+# node name and count
 node_name=k8s-node
+node_count=3
 ###

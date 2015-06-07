@@ -1,21 +1,26 @@
 #cloud-config
 
 coreos:
-  update:
-    group: _GROUP_
-    reboot-strategy: off
   etcd2:
     name: master1
-    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
-    advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+    initial-advertise-peer-urls: http://10.222.1.1:2380
     initial-cluster-token: k8s_etcd
-    listen-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
-    initial-advertise-peer-urls: http://$private_ipv4:2380
-    initial-cluster: master1=http://$private_ipv4:2380
+    initial-cluster: master1=http://10.222.1.1:2380
     initial-cluster-state: new
+    listen-peer-urls: http://10.222.1.1:2380,http://10.222.1.1:7001
+    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+    advertise-client-urls: http://10.222.1.1:2379,http://10.222.1.1:4001
   fleet:
     metadata: role=master
   units:
+    - name: 00-ens4v1.network
+      runtime: true
+      content: |
+        [Match]
+        Name=ens4v1
+
+        [Network]
+        Address=10.222.1.1/24
     - name: etcd2.service
       command: start
     - name: fleet.service
@@ -41,6 +46,12 @@ coreos:
             Environment=DOCKER_OPTS='--insecure-registry="0.0.0.0/0"'
 
 write_files:
+ - path: /etc/resolv.conf
+   permissions: 0644
+   owner: root
+   content: |
+     nameserver 169.254.169.254
+     nameserver 10.240.0.1
  - path: /opt/bin/wupiao
    permissions: '0755'
    content: |

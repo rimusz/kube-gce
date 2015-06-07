@@ -2,11 +2,9 @@
 ssh-add ~/.ssh/google_compute_engine &>/dev/null
 # Setup Client SSH Tunnels
 
-# GC project
-project=$(cat bootstrap_k8s_cluster.sh | grep project= | head -1 | cut -f2 -d"=")
-# master name
-master_name=$(cat bootstrap_k8s_cluster.sh | grep master_name= | head -1 | cut -f2 -d"=")
-
+# fetch from settings file
+project=$(cat settings | grep project= | head -1 | cut -f2 -d"=")
+master_name=$(cat settings | grep master_name= | head -1 | cut -f2 -d"=")
 # get master internal IP
 master_external_ip=$(gcloud compute instances list --project=$project | grep -v grep | grep $master_name | awk {'print $5'});
 
