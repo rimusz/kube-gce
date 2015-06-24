@@ -59,7 +59,6 @@ kube-kubelet.service			a9b4be28.../10.240.252.226	active	running
 kube-proxy.service				21ed373b.../10.240.189.83	active	running
 kube-proxy.service				770ff9fd.../10.240.8.219	active	running
 kube-proxy.service				a9b4be28.../10.240.252.226	active	running
-kube-register.service			cc124065.../10.240.64.180	active	running
 kube-scheduler.service			cc124065.../10.240.64.180	active	running
 
 NAME             LABELS                                  STATUS
