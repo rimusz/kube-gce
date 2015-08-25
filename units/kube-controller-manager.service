@@ -10,7 +10,8 @@ ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-controller-manager
 ExecStart=/opt/bin/kube-controller-manager \
  --master=127.0.0.1:8080 \
  --cloud_provider=gce \
- --logtostderr=true
+ --logtostderr=true \
+ --service-account-private-key-file="/var/run/kubernetes/apiserver.key"
 Restart=always
 RestartSec=10
 

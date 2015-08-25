@@ -18,7 +18,10 @@ ExecStart=/opt/bin/kube-apiserver \
  --cloud_provider=gce \
  --cors_allowed_origins=.* \
  --logtostderr=true \
- --runtime_config=api/v1
+ --runtime_config=api/v1 \
+ --admission-control=ServiceAccount \
+ --service_account_key_file=/var/run/kubernetes/apiserver.key \
+ --service_account_lookup=false
 
 Restart=always
 RestartSec=10
