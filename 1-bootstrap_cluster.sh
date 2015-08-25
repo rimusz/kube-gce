@@ -42,14 +42,14 @@ gcloud compute routes create ip-10-222-1-1-$master_name --project=$project \
 #
 
 # create nodes
-#  by defaul 3 nodes get created, update node_count in settinga file if you want a different number of nodes
+#  by default 3 nodes get created, update node_count in settings file if you want a different number of nodes
 for (( i=1; i<=$node_count; i++ ))
 do
     gcloud compute instances create $node_name-$i \
      --project=$project --image=$image --image-project=coreos-cloud \
      --boot-disk-type=pd-standard --boot-disk-size=50 --zone=$zone \
      --machine-type=$node_machine_type --metadata-from-file user-data=./cloud-config/node.yaml \
-     --can-ip-forward --tags=k8s-cluster,k8s-nodes
+     --can-ip-forward --tags="k8s-cluster,${node_name}"
 done
 #
 
