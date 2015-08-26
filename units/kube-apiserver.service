@@ -3,6 +3,7 @@ Description=Kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
+ExecStartPre=/bin/bash -c 'if [ ! -f /srv/kubernetes/ca.crt ]; then echo "Generating certificate"; mkdir -p /srv/kubernetes/; tmpdir=$(mktemp -d -t kubernetes_cacert.XXXXXX); cd "$tmpdir"; curl -L -O https://storage.googleapis.com/kubernetes-release/easy-rsa/easy-rsa.tar.gz > /dev/null 2>&1; tar xzf easy-rsa.tar.gz > /dev/null 2>&1; cd easy-rsa-master/easyrsa3; ./easyrsa init-pki > /dev/null 2>&1; ./easyrsa --batch "--req-cn=10.222.1.1@`date +%s`" build-ca nopass > /dev/null 2>&1; ./easyrsa build-server-full 10.222.1.1 nopass > /dev/null 2>&1; cp -p pki/issued/10.222.1.1.crt "/srv/kubernetes/server.cert" > /dev/null 2>&1; cp -p pki/private/10.222.1.1.key "/srv/kubernetes/server.key" > /dev/null 2>&1; cp -p pki/ca.crt "/srv/kubernetes/ca.crt"; chmod 660 "/srv/kubernetes/server.key" "/srv/kubernetes/server.cert" "/srv/kubernetes/ca.crt"; rm -rf "$tmpdir"; else echo "Certificate exist"; fi'
 ExecStartPre=-/usr/bin/mkdir -p /opt/bin
 ExecStartPre=/bin/bash -c '/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/_K8S_VERSION_/bin/linux/amd64/kube-apiserver'
 ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-apiserver
@@ -18,7 +19,13 @@ ExecStart=/opt/bin/kube-apiserver \
  --cloud_provider=gce \
  --cors_allowed_origins=.* \
  --logtostderr=true \
- --runtime_config=api/v1 
+ --runtime_config=api/v1 \
+ --admission-control=ServiceAccount \
+ --service_account_key_file=/srv/kubernetes/server.key \
+ --service_account_lookup=false \
+ --client-ca-file=/srv/kubernetes/ca.crt \
+ --tls-cert-file=/srv/kubernetes/server.cert \
+ --tls-private-key-file=/srv/kubernetes/server.key
 
 Restart=always
 RestartSec=10
