@@ -20,7 +20,7 @@ coreos:
         Name=ens4v1
 
         [Network]
-        Address=10.222.1.1/24
+        Address=10.222.1.1/32
     - name: etcd2.service
       command: start
     - name: fleet.service
