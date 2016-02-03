@@ -1,4 +1,4 @@
-# Easy Deploying CoreOS with Kubernetes to GCE
+# Easily Deploy CoreOS + Kubernetes Cluster to GCE
 
 With a few simple scripts on your Mac OS X or Linux computer, you can deploy an elastic Kubernetes cluster on top of CoreOS using [fleet](https://github.com/coreos/fleet) to GCE.
 By default it is set to one master + three nodes.
