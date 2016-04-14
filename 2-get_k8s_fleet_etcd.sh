@@ -2,7 +2,10 @@
 
 ssh-add ~/.ssh/google_compute_engine &>/dev/null
 
-# Install/update etcdctl, fleetctl and kubectl
+if [ $? != 0  ]; then
+  echo "Your ssh-agent isn't running -- please start it and run this script again."
+  exit 2
+fi
 
 # fetch from settings file
 project=$(cat settings | grep project= | head -1 | cut -f2 -d"=")

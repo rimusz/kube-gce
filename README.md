@@ -18,6 +18,34 @@ cd coreos-multi-node-k8s-gce
 ````
 * edit `settings` and set `project and zone`, the rest of settings you can adjust by your requirements if you need to.
 
+
+### Start ssh-agent as it is used extensively by this script
+
+Confirm your ssh-agent is running.  Run the following command.  If you see the error message then it is not running.
+
+````
+$ ssh-add -l
+Could not open a connection to your authentication agent.
+````
+
+Start it up.  Run the command ssh-agent.  You should see somthing simlar to the following.
+
+````
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-ztSdihLxClVL/agent.24475; export SSH_AUTH_SOCK;
+SSH_AGENT_PID=24476; export SSH_AGENT_PID;
+echo Agent pid 24476;
+````
+
+Cut and paste the three lines the command output and paste back into the terminal you're using to run the kubernetes commnands.  We can then do a quick test to confirm that we're running `ssh-agent` as we expect.
+
+````
+$ ssh-add -l
+The agent has no identities.
+````
+
+`ssh-agent` is a whole other category of software.  You can [look more into it here.](http://rabexc.org/posts/pitfalls-of-ssh-agents)
+
 ### Bootstrap Kubernetes Cluster and install local clients
 
 * To bootstrap CoreOS cluster in GCE run:
