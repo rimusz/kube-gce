@@ -108,7 +108,6 @@ At this point you are ready to start playing with Kubernetes using the `kubectl`
 To add more nodes, just update `settings` `node_count` and run `1-bootstrap_k8s_cluster.sh` again. For removing nodes, simply destroy them via `GCE developer console` and `fleet` will reschedule the `kube-kubelet` and `kube-proxy` units.
 
 ### If you are OS X user:
-* A standalone Kubernetes CoreOS VM App can be found here [CoreOS-Vagrant Kubernetes Solo GUI](https://github.com/rimusz/coreos-osx-gui-kubernetes-solo).
-* Cluster one with Kubernetes CoreOS VM App can be found here [CoreOS-Vagrant Kubernetes Cluster GUI for OS X](https://github.com/rimusz/coreos-osx-gui-kubernetes-cluster).
-
+* Kubernetes Solo VM App can be found here [Kubernetes Solo for OS X](https://github.com/TheNewNormal/kube-solo-osx).
+* Kubernetes Cluster VM App can be found here [Kubernetes Cluster for OS X](https://github.com/TheNewNormal/kube-cluster-osx).
 
